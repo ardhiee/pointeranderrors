@@ -1,6 +1,9 @@
 package pointeranderrors
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+)
 
 // Bitcoin type
 type Bitcoin int
@@ -25,8 +28,13 @@ func (w *Wallet) Deposit(amount Bitcoin) {
 }
 
 // Withdraw will deduct amount
-func (w *Wallet) Withdraw(amount Bitcoin) {
+func (w *Wallet) Withdraw(amount Bitcoin) error {
+
+	if amount > w.balance {
+		return errors.New("cannot withdraw, insufficient funds")
+	}
 	w.balance -= amount
+	return nil
 }
 
 // Balance will return the balance
